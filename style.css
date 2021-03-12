@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  pad: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.character_map {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background: #3b3b3b;
+}
+
+.card {
+  margin: 3%;
+  width: 225px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  position: relative;
+}
+
+img {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  opacity: 0.8;
+}
+
+.bee_logo {
+  width: 30px;
+  height: 30px;
+}
+
+.char_btm {
+  background: #fff;
+  margin-left: -20px;
+  position: relative;
+  height: 120px;
+  transition: 1s;
+}
+
+.char_btm::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-bottom-color: #acacac;
+  border-top: 0;
+  border-right: 0;
+  margin-top: -20px;
+  overflow: visible;
+}
