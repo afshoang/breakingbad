@@ -16,6 +16,23 @@ body {
   background: #3b3b3b;
 }
 
+.breakingBad {
+  margin-bottom: 100px;
+  width: 100%;
+  text-align: center;
+}
+
+.breakingBad h1 {
+  font-size: 56px;
+  font-weight: 700;
+}
+
+.chemistry {
+  color: rgb(72, 127, 90);
+  background: rgb(255, 255, 255);
+  text-shadow: rgb(0 0 0) 1px 1px;
+}
+
 .card {
   margin: 3%;
   width: 225px;
@@ -31,6 +48,10 @@ img {
   object-fit: cover;
   overflow: hidden;
   opacity: 0.8;
+}
+
+.card img {
+  cursor: pointer;
 }
 
 .bee_logo {
@@ -111,4 +132,17 @@ img {
 
 .hidden_info div p:first-of-type {
   font-weight: 700;
+}
+
+footer {
+  margin: 5% 2% 1%;
+  border-top: 1px solid rgb(123, 123, 123);
+  position: relative;
+}
+
+footer svg {
+  position: absolute;
+  height: 30px;
+  left: 1%;
+  top: 20%;
 }
