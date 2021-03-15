@@ -2,21 +2,38 @@ var baseURL = 'https://www.breakingbadapi.com/api';
 var url;
 
 function fetchResult() {
-  url = baseURL + '/characters?limit=12&offset=0';
+  url = baseURL + '/characters?category=Breaking+Bad';
   fetch(url)
     .then((response) => response.json())
     .then(function (json) {
-      console.log(json);
       displayCharacters(json);
     });
 }
 
+function randomCharacter(json) {
+  let characters = json;
+  let charactersOf12 = [];
+  while (charactersOf12.length < 12) {
+    let random = Math.floor(Math.random() * characters.length);
+    // if duplicate character dont push to characterOf12
+    if (charactersOf12.indexOf(characters[random]) === -1) {
+      charactersOf12.push(characters[random]);
+    }
+  }
+  return charactersOf12;
+}
+
 // Grab element from html
 let characterMap = document.querySelector('.character_map');
+// input search quotes
+let searchQuotes = document.querySelector('#searchQuotes');
+let quoteText = document.querySelector('#quote_text');
+let quoteAuthor = document.querySelector('#quote_author');
 
 function displayCharacters(json) {
+  // array of 12 character
+  let characters = randomCharacter(json);
   // json = array of 12 character
-  let characters = json;
   for (let character of characters) {
     let div1 = document.createElement('div');
     let image = document.createElement('img');
@@ -26,11 +43,14 @@ function displayCharacters(json) {
     let nickName = document.createElement('p');
     let bee = document.createElement('img');
 
+    // hidden
     let divHidden = document.createElement('div');
-    let divId = document.createElement('div');
-    let pId1 = document.createElement('p');
-    let pId2 = document.createElement('p');
+    // BORN
+    let divBorn = document.createElement('div');
+    let pBorn1 = document.createElement('p');
+    let pBorn2 = document.createElement('p');
 
+    // OCCUPATION
     let divOccupation = document.createElement('div');
     let pOc1 = document.createElement('p');
     let pOc2 = document.createElement('p');
@@ -64,29 +84,30 @@ function displayCharacters(json) {
 
     // Hidden information
     // ID
-    pId1.textContent = 'Id';
-    pId2.textContent = character.char_id;
-    divId.append(pId1, pId2);
+    pBorn1.textContent = 'Born';
+    pBorn2.textContent = character.birthday;
+    divBorn.append(pBorn1, pBorn2);
     divHidden.classList.add('hidden', 'hidden_info');
     //OCCUPATION
     pOc1.textContent = 'Occupation';
     // occupation = []
-    pOc2.textContent = character.occupation.join(', '); // => job1, job2
+    pOc2.textContent = character.occupation.join(', ');
+    // => job1, job2
     divOccupation.append(pOc1, pOc2);
     // APPEARANCE
     pAp1.textContent = 'Breaking Bad Seasons';
     pAp2.textContent = character.appearance.join(', ');
+
     divApprearance.append(pAp1, pAp2);
     // STATUS
     pSta1.textContent = 'Status';
     pSta2.textContent = character.status;
     divStatus.append(pSta1, pSta2);
 
-    divHidden.append(divId, divOccupation, divApprearance, divStatus);
+    divHidden.append(divBorn, divOccupation, divApprearance, divStatus);
 
     charBtm.appendChild(name);
     charBtm.appendChild(divNickname);
-
     charBtm.appendChild(divHidden);
 
     div1.append(image, charBtm);
@@ -99,5 +120,12 @@ function displayCharacters(json) {
     });
   }
 }
+
+searchQuotes.addEventListener('keydown', function search(e) {
+  if (e.key == 'Enter') {
+    e.preventDefault();
+    console.log(this.value);
+  }
+});
 
 fetchResult();
