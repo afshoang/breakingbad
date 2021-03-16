@@ -66,6 +66,25 @@ body {
    text-align: right;
 }
 
+/* .button-container {
+  display: none;
+} */
+
+.prev_btn,
+.next_btn {
+	color: rgba(94, 186, 104, 0.56);
+	font-size: 1.25rem;
+	background: transparent;
+	border-color: transparent;
+	margin: 0 0.3rem;
+	transition: var(--transition);
+	cursor: pointer;
+}
+
+.prev_btn:hover,
+.next_btn:hover {
+  color:rgb(72, 127, 90)
+}
 
 .card {
   margin: 3%;

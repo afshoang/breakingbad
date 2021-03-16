@@ -1,13 +1,25 @@
 var baseURL = 'https://www.breakingbadapi.com/api';
-var url;
 
-function fetchResult() {
-  url = baseURL + '/characters?category=Breaking+Bad';
-  fetch(url)
-    .then((response) => response.json())
-    .then(function (json) {
-      displayCharacters(json);
-    });
+// function fetchResult() {
+//   url = baseURL + '/characters?category=Breaking+Bad';
+//   fetch(url)
+//     .then((response) => response.json())
+//     .then(function (json) {
+//       displayCharacters(json);
+//     });
+// }
+
+async function fetchResult() {
+  var url = baseURL + '/characters?category=Breaking+Bad';
+  let response = await fetch(url);
+  let json = await response.json();
+  displayCharacters(json);
+}
+
+async function fetchQuote() {
+  var url = baseURL + '/quotes?series=Breaking+Bad';
+  let response = await fetch(url);
+  return await response.json();
 }
 
 function randomCharacter(json) {
@@ -29,6 +41,9 @@ let characterMap = document.querySelector('.character_map');
 let searchQuotes = document.querySelector('#searchQuotes');
 let quoteText = document.querySelector('#quote_text');
 let quoteAuthor = document.querySelector('#quote_author');
+let prevBtn = document.querySelector('#prev-btn');
+
+let nextBtn = document.querySelector('#next-btn');
 
 function displayCharacters(json) {
   // array of 12 character
@@ -121,11 +136,26 @@ function displayCharacters(json) {
   }
 }
 
-searchQuotes.addEventListener('keydown', function search(e) {
+searchQuotes.addEventListener('keydown', async function (e) {
   if (e.key == 'Enter') {
     e.preventDefault();
-    console.log(this.value);
+    let keyword = e.target.value.toLowerCase();
+    let allQuotes = await fetchQuote();
+    let results = [];
+    for (let quote of allQuotes) {
+      if (quote.author.toLowerCase().includes(keyword)) {
+        results.push(quote);
+      }
+    }
+    e.target.value = '';
+    displayQuotes(results);
   }
 });
+
+function displayQuotes(quotes) {
+  var currentQuote = 0;
+  quoteText.textContent = quotes[currentQuote].quote;
+  quoteAuthor.textContent = quotes[currentQuote].author;
+}
 
 fetchResult();
