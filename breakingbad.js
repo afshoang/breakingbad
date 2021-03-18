@@ -1,4 +1,5 @@
 var baseURL = 'https://www.breakingbadapi.com/api';
+var allQuotes;
 
 // function fetchResult() {
 //   url = baseURL + '/characters?category=Breaking+Bad';
@@ -19,7 +20,8 @@ async function fetchResult() {
 async function fetchQuote() {
   var url = baseURL + '/quotes?series=Breaking+Bad';
   let response = await fetch(url);
-  return await response.json();
+  allQuotes = await response.json();
+  displayQuotes();
 }
 
 function randomCharacter(json) {
@@ -41,9 +43,8 @@ let characterMap = document.querySelector('.character_map');
 let searchQuotes = document.querySelector('#searchQuotes');
 let quoteText = document.querySelector('#quote_text');
 let quoteAuthor = document.querySelector('#quote_author');
-let prevBtn = document.querySelector('#prev-btn');
-
-let nextBtn = document.querySelector('#next-btn');
+let prevBtn = document.querySelector('.prev_btn');
+let nextBtn = document.querySelector('.next_btn');
 
 function displayCharacters(json) {
   // array of 12 character
@@ -136,26 +137,41 @@ function displayCharacters(json) {
   }
 }
 
+// CURRENT QUOTE
+let currentQuote = 0;
+
 searchQuotes.addEventListener('keydown', async function (e) {
   if (e.key == 'Enter') {
     e.preventDefault();
     let keyword = e.target.value.toLowerCase();
-    let allQuotes = await fetchQuote();
-    let results = [];
-    for (let quote of allQuotes) {
-      if (quote.author.toLowerCase().includes(keyword)) {
-        results.push(quote);
-      }
-    }
+    // filter quote.author === input
+    allQuotes = allQuotes.filter(function filteredQuote(obj) {
+      return obj.author.toLowerCase().includes(keyword);
+    });
     e.target.value = '';
-    displayQuotes(results);
+    displayQuotes();
   }
 });
 
-function displayQuotes(quotes) {
-  var currentQuote = 0;
-  quoteText.textContent = quotes[currentQuote].quote;
-  quoteAuthor.textContent = quotes[currentQuote].author;
+function displayQuotes() {
+  quoteText.textContent = allQuotes[currentQuote].quote;
+  quoteAuthor.textContent = allQuotes[currentQuote].author;
 }
 
+nextBtn.addEventListener('click', function () {
+  currentQuote++;
+  if (currentQuote === allQuotes.length) {
+    currentQuote = 0;
+  }
+  displayQuotes();
+});
+prevBtn.addEventListener('click', function () {
+  currentQuote--;
+  if (currentQuote < 0) {
+    currentQuote = allQuotes.length - 1;
+  }
+  displayQuotes();
+});
+
 fetchResult();
+fetchQuote();
